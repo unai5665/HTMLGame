@@ -32,7 +32,7 @@ public class Balloon : MonoBehaviour
         transform.Translate(Vector3.up * speed * Time.deltaTime);
 
         // Si el globo se sale de la pantalla, reaparece abajo
-        if (transform.position.y > Screen.height)
+        if (transform.position.y > Screen.height )
         {
             ResetPosition();
         }
