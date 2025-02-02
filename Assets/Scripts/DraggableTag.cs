@@ -1,35 +1,51 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using TMPro;
 
-public class DraggableTag : MonoBehaviour
+public class DraggableTag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
-    private Vector3 offset;
-    private bool isDragging = false;
+    private RectTransform rectTransform;
+    private CanvasGroup canvasGroup;
+    private Vector3 originalPosition;
 
-    void OnMouseDown()
+    void Start()
     {
-        offset = transform.position - GetMouseWorldPos();
-        isDragging = true;
+        rectTransform = GetComponent<RectTransform>();
+        canvasGroup = GetComponent<CanvasGroup>();
+        originalPosition = transform.position;
     }
 
-    void OnMouseDrag()
+    public void OnBeginDrag(PointerEventData eventData)
     {
-        if (isDragging)
+        canvasGroup.alpha = 0.6f;
+        canvasGroup.blocksRaycasts = false;
+    }
+
+    public void OnDrag(PointerEventData eventData)
+    {
+        rectTransform.position = eventData.position;
+    }
+
+    public void OnEndDrag(PointerEventData eventData)
+    {
+        canvasGroup.alpha = 1f;
+        canvasGroup.blocksRaycasts = true;
+
+        // Verifica si está sobre un espacio válido
+        if (!ValidDrop())
         {
-            transform.position = GetMouseWorldPos() + offset;
+            transform.position = originalPosition; // Devuelve a la posición original
         }
     }
 
-    void OnMouseUp()
+    private bool ValidDrop()
     {
-        isDragging = false;
+        // Aquí puedes implementar la lógica para saber si se colocó en un lugar válido
+        return true;
     }
 
-    private Vector3 GetMouseWorldPos()
+    public string GetTag()
     {
-        Vector3 mousePos = Input.mousePosition;
-        mousePos.z = Camera.main.WorldToScreenPoint(transform.position).z; 
-        return Camera.main.ScreenToWorldPoint(mousePos);
+        return GetComponent<TMP_Text>().text;
     }
 }

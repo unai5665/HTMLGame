@@ -18,6 +18,8 @@ public class GameManager : MonoBehaviour
 
     public TextMeshProUGUI timerText;
     public TextMeshProUGUI scoreText;
+    public TagContainer tagContainer;
+
     private float timeLeft = 60f;
     private int score = 0;
 
@@ -75,7 +77,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    void NextLevel()
+    public void NextLevel()
     {
         currentTags = new List<string> { "<div>", "</div>", "<h1>", "</h1>" }; // Nueva ronda
         playerOrder.Clear();
