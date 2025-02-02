@@ -7,7 +7,7 @@ public class BalloonSpawner : MonoBehaviour
     public GameObject balloonPrefab;  // Prefab del globo
     public Transform spawnPoint;      // Punto donde los globos aparecerán
     public float spawnInterval = 2f;  // Intervalo de tiempo entre cada aparición de globo
-    public float spawnHeight = 5f;    // Altura en la que aparecerán los globos
+    public float spawnHeight = -3f;    // Altura en la que aparecerán los globos
 
     void Start()
     {
