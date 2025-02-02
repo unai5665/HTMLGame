@@ -9,7 +9,7 @@ public class Balloon : MonoBehaviour
     public TMP_Text textMeshPro;
 
 
-    private float speed = 2f; // Velocidad de subida
+    private float speed = 0.5f; // Velocidad de subida
 
      void Start()
     {

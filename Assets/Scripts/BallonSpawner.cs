@@ -31,11 +31,12 @@ public class BalloonSpawner : MonoBehaviour
     void SpawnBalloon()
     {
         // Determina una posición aleatoria en el eje X y Z para el globo
-        float randomX = Random.Range(-1f, 2f); // Puedes ajustar estos valores
+        float randomX = Random.Range(-0.5f, 1.5f); // Puedes ajustar estos valores
+        float fixedZ = 0f;
         
 
         // Crea una nueva instancia del globo en la posición determinada
-        Vector3 spawnPosition = new Vector3(randomX, spawnHeight);
+        Vector3 spawnPosition = new Vector3(randomX, spawnHeight, fixedZ);
 
         // Instancia el globo
         Instantiate(balloonPrefab, spawnPosition, Quaternion.identity);
