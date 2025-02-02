@@ -8,6 +8,9 @@ public class BalloonSpawner : MonoBehaviour
     public Transform spawnPoint;      // Punto donde los globos aparecerán
     public float spawnInterval = 2f;  // Intervalo de tiempo entre cada aparición de globo
     public float spawnHeight = -3f;    // Altura en la que aparecerán los globos
+    public int maxBalloons = 4;       // Máximo número de globos en la pantalla
+    private int currentBalloonCount = 0;
+    private List<GameObject> activeBalloons = new List<GameObject>();
 
     void Start()
     {
@@ -18,11 +21,13 @@ public class BalloonSpawner : MonoBehaviour
     // Coroutine para generar los globos en intervalos regulares
     IEnumerator SpawnBalloons()
     {
-        while (true)
+        while (true) // Bucle infinito para mantener el spawn activo
         {
-            SpawnBalloon();  // Llama a la función que genera un globo
-
-            // Espera el tiempo especificado antes de generar el siguiente globo
+            // Revisa cuántos globos hay en pantalla
+            if (activeBalloons.Count < maxBalloons)
+            {
+                SpawnBalloon();
+            }
             yield return new WaitForSeconds(spawnInterval);
         }
     }
@@ -34,11 +39,17 @@ public class BalloonSpawner : MonoBehaviour
         float randomX = Random.Range(-0.5f, 1.5f); // Puedes ajustar estos valores
         float fixedZ = -6f;
         
-
         // Crea una nueva instancia del globo en la posición determinada
         Vector3 spawnPosition = new Vector3(randomX, spawnHeight, fixedZ);
 
-        // Instancia el globo
-        Instantiate(balloonPrefab, spawnPosition, Quaternion.identity);
+        
+        GameObject newBalloon = Instantiate(balloonPrefab, spawnPosition, Quaternion.identity);
+        activeBalloons.Add(newBalloon);
+    }
+
+     public void RemoveBalloon(GameObject balloon)
+    {
+        activeBalloons.Remove(balloon);
+        Destroy(balloon);
     }
 }

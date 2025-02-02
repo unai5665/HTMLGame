@@ -8,12 +8,13 @@ public class Balloon : MonoBehaviour
     public string htmlTag; // La etiqueta HTML que contiene este globo
     public TMP_Text textMeshPro;
 
-
     private float speed = 0.5f; // Velocidad de subida
+    private BalloonSpawner spawner;
+    
 
      void Start()
-    {
-        // Buscar el TextMeshPro dentro del objeto hijo
+    {   
+        spawner = FindObjectOfType<BalloonSpawner>();
         textMeshPro = GetComponentInChildren<TMP_Text>();
 
         if (textMeshPro != null)
@@ -26,27 +27,30 @@ public class Balloon : MonoBehaviour
         }
     }
 
-
     void Update()
     {
         transform.Translate(Vector3.up * speed * Time.deltaTime);
 
-        // Si el globo se sale de la pantalla, reaparece abajo
-        if (transform.position.y > Screen.height )
+    
+         // Reaparece si se sale de la pantalla
+        if (transform.position.y > 5f)
         {
-            ResetPosition();
+            Respawn();
         }
     }
 
-    public void OnClick()
+    // Detecta clic en el globo
+    private void OnMouseDown()
     {
-        GameManager.Instance.CatchBalloon(htmlTag); // Enviar la etiqueta al rectángulo
-        Destroy(gameObject); // Explota el globo
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.CatchBalloon(htmlTag);
+            spawner.RemoveBalloon(gameObject); // Elimina el globo correctamente
+        }
     }
 
-    void ResetPosition()
+    void Respawn()
     {
-        float randomX = Random.Range(100, Screen.width - 100);
-        transform.position = new Vector3(randomX, -50, 0);
+        transform.position = new Vector3(Random.Range(-2f, 2f), -3f, 0);
     }
 }
