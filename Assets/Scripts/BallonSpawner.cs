@@ -32,7 +32,7 @@ public class BalloonSpawner : MonoBehaviour
     {
         // Determina una posición aleatoria en el eje X y Z para el globo
         float randomX = Random.Range(-0.5f, 1.5f); // Puedes ajustar estos valores
-        float fixedZ = 0f;
+        float fixedZ = -6f;
         
 
         // Crea una nueva instancia del globo en la posición determinada
