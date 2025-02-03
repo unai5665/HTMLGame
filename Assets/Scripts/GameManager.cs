@@ -8,10 +8,12 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
+    // Prefabs y referencias a objetos en la escena
     public GameObject balloonPrefab; // Prefab del globo
     public Transform balloonParent;  // Lugar donde se generan los globos
     public Transform dropZone; // Zona donde se ordenan las etiquetas
 
+    // Variables del juego
     public List<string> currentTags = new List<string> { "<a>", "</a>", "<p>", "</p>" };
     private List<string> playerOrder = new List<string>();
 
@@ -27,56 +29,56 @@ public class GameManager : MonoBehaviour
         Instance = this;
     }
 
-    void Start()
+    // Se llama cuando el jugador hace clic en "Iniciar Juego"
+    public void StartGame()
     {
-        SpawnBalloons();  // Solo se llama aquí
+        ResetGame(); // Resetea el juego al inicio
     }
 
     void Update()
-{
-    // Solo actualizamos el contador si el tiempo no ha llegado a 0
-    if (timeLeft > 0)
     {
-        timeLeft -= Time.deltaTime;
-        timerText.text = "Tiempo: " + Mathf.Ceil(timeLeft); // Actualiza el texto
-    }
-    else
-    {
-        timerText.text = "Tiempo: 0"; // Asegura que el contador se quede en 0 cuando termine
+        // Actualiza el tiempo en pantalla
+        if (timeLeft > 0)
+        {
+            timeLeft -= Time.deltaTime;
+            timerText.text = "Tiempo: " + Mathf.Ceil(timeLeft); // Muestra el tiempo restante
+        }
+        else
+        {
+            timerText.text = "Tiempo: 0"; // Asegura que el tiempo no sea negativo
+        }
+
+        // Fin del juego cuando el tiempo llega a 0
+        if (timeLeft <= 0)
+        {
+            GameOver();
+        }
     }
 
-    // Verifica si el tiempo ha llegado a 0 para finalizar el juego
-    if (timeLeft <= 0)
-    {
-        GameOver();
-    }
-}
-
-    // Función para crear los globos
+    // Función para generar los globos
     void SpawnBalloons()
     {
-        // Asegurarse de que no se generen globos extras
-        foreach (Transform child in balloonParent)  // Limpiar el BalloonParent antes de generar nuevos globos
+        // Limpiar globos anteriores antes de crear nuevos
+        foreach (Transform child in balloonParent)
         {
             Destroy(child.gameObject);
         }
 
+        // Generar nuevos globos
         foreach (string tag in currentTags)
         {
-             Debug.Log("Asignando etiqueta al globo: " + tag); 
-            GameObject newBalloon = Instantiate(balloonPrefab, balloonParent); // Crear el globo bajo el BalloonParent
-            newBalloon.GetComponent<Balloon>().htmlTag = tag; // Asignar la etiqueta al globo
-
-            newBalloon.transform.position = new Vector3(Random.Range(-3f, 3f), Random.Range( -3f, -6f), -5.7f); // Posición aleatoria
+            Debug.Log("Asignando etiqueta al globo: " + tag);
+            GameObject newBalloon = Instantiate(balloonPrefab, balloonParent);
+            newBalloon.GetComponent<Balloon>().htmlTag = tag;
+            newBalloon.transform.position = new Vector3(Random.Range(-3f, 3f), Random.Range(-3f, -6f), -5.7f);
         }
     }
 
-    // Esta función se llama cuando el jugador captura un globo
+    // Función para que el jugador capture un globo
     public void CatchBalloon(string tag)
     {
         playerOrder.Add(tag);
-
-       
+        CheckOrder(); // Comprobar si el orden es correcto cada vez que se captura un globo
     }
 
     // Verifica si el orden de las etiquetas es correcto
@@ -86,25 +88,39 @@ public class GameManager : MonoBehaviour
         {
             score++;
             scoreText.text = "Puntos: " + score;
-            NextLevel();
+            NextLevel(); // Avanzar al siguiente nivel si el orden es correcto
         }
         else
         {
-            playerOrder.Clear(); // Resetear si el orden está mal
+            playerOrder.Clear(); // Reiniciar si el orden es incorrecto
         }
     }
 
     // Avanza al siguiente nivel
     public void NextLevel()
     {
-        currentTags = new List<string> { "<div>", "</div>", "<h1>", "</h1>" }; // Nueva ronda
+        // Aquí definimos las nuevas etiquetas del siguiente nivel
+        currentTags = new List<string> { "<div>", "</div>", "<h1>", "</h1>" };
         playerOrder.Clear();
-        SpawnBalloons();  // Nuevos globos para la siguiente ronda
+        SpawnBalloons();
     }
 
-    // Fin del juego
+    // Fin del juego, se muestra la pantalla de Game Over
     void GameOver()
     {
         Debug.Log("Fin del juego. Puntuación: " + score);
+        UIManager.Instance.ShowGameOverScreen(score); // Mostrar pantalla de Game Over
+    }
+
+    // Reinicia el juego (se puede usar tanto al inicio como al volver al inicio)
+    public void ResetGame()
+    {
+        timeLeft = 60f;
+        score = 0;
+        scoreText.text = "Puntos: " + score;
+        playerOrder.Clear();
+        currentTags = new List<string> { "<a>", "</a>", "<p>", "</p>" }; // Resetear a nivel 1
+        SpawnBalloons(); // Generar globos para el primer nivel
+        UIManager.Instance.ShowStartScreen(); // Mostrar pantalla de inicio
     }
 }

@@ -13,6 +13,15 @@ public class TagContainer : MonoBehaviour
     public GameObject draggableTagPrefab;  // Prefab de la etiqueta arrastrable
     public Transform tagContainerPanel; 
 
+    void Start()
+{
+    if (GameManager.Instance != null)
+    {
+        expectedOrder = new List<string>(GameManager.Instance.currentTags); // Sincroniza con el GameManager
+    }
+}
+
+
     public void CheckOrder()
     {
         List<string> playerOrder = new List<string>();

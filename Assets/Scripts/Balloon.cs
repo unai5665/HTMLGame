@@ -10,33 +10,18 @@ public class Balloon : MonoBehaviour
 
     private float speed = 0.5f; // Velocidad de subida
 
- void Start()
+void Start()
 {
-    // Buscar el TextMeshPro dentro del objeto hijo
     textMeshPro = GetComponentInChildren<TMP_Text>();
-
-    // Comprobar si la variable htmlTag tiene un valor correcto
-    
-
-    if (textMeshPro != null)
+    if (textMeshPro != null && !string.IsNullOrEmpty(htmlTag))
     {
-        if (!string.IsNullOrEmpty(htmlTag)) // Verifica si htmlTag tiene un valor
-        {
-            textMeshPro.text = htmlTag; // Asigna la etiqueta al texto del globo
-            
-        }
-        else
-        {
-            
-        }
-    }
-    else
-    {
-       
+        textMeshPro.text = htmlTag;
     }
 
-    SetRandomPosition();
+    // Posición inicial directamente sin necesidad de SetRandomPosition()
+    transform.position = new Vector3(Random.Range(-3f, 3f), Random.Range(-6f, -3f), -5.7f);
 }
+
 
 
 
@@ -52,14 +37,7 @@ public class Balloon : MonoBehaviour
         }
     }
 
-    private void SetRandomPosition()
-    {
-        // Si el Balloon no ha sido posicionado correctamente por el prefab, le damos una posición aleatoria
-        if (transform.position == Vector3.zero)
-        {
-            transform.position = new Vector3(Random.Range(-3f, 3f), Random.Range( -3f, -6f), -5.7f);
-        }
-    }
+   
 
     void Respawn()
     {

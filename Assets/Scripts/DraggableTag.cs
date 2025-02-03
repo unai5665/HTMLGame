@@ -7,12 +7,14 @@ public class DraggableTag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     private RectTransform rectTransform;
     private CanvasGroup canvasGroup;
     private Vector3 originalPosition;
+    public Transform originalParent; // Para volver al contenedor original si es incorrecto
 
     void Start()
     {
         rectTransform = GetComponent<RectTransform>();
         canvasGroup = GetComponent<CanvasGroup>();
-        originalPosition = transform.position;
+        originalPosition = rectTransform.anchoredPosition;
+        originalParent = transform.parent; // Guarda el padre original
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -23,7 +25,7 @@ public class DraggableTag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
 
     public void OnDrag(PointerEventData eventData)
     {
-        rectTransform.position = eventData.position;
+        rectTransform.anchoredPosition += eventData.delta;
     }
 
     public void OnEndDrag(PointerEventData eventData)
@@ -31,22 +33,16 @@ public class DraggableTag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
         canvasGroup.alpha = 1f;
         canvasGroup.blocksRaycasts = true;
 
-        // Verifica si está sobre un espacio válido
-        if (!ValidDrop())
+        // Si no fue soltado en un slot válido, regresa a su posición original
+        if (transform.parent == originalParent)
         {
-            transform.position = originalPosition; // Devuelve a la posición original
+            ResetPosition();
         }
     }
-    public void ResetPosition()
-{
-    // Devolver la etiqueta a su posición original
-    transform.position = originalPosition;
-}
 
-    private bool ValidDrop()
+    public void ResetPosition()
     {
-        // Aquí puedes implementar la lógica para saber si se colocó en un lugar válido
-        return true;
+        rectTransform.anchoredPosition = originalPosition;
     }
 
     public string GetTag()
