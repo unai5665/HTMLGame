@@ -30,7 +30,7 @@ public class UIManager : MonoBehaviour
     }
 
     // Llama a GameManager para iniciar el juego
-    public void StartGame()
+    private void StartGame()
     {
         startScreen.SetActive(false);  // Oculta la pantalla de inicio
         GameManager.Instance.StartGame();  // Llama al método StartGame en GameManager

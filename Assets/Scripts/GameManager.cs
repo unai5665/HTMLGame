@@ -32,27 +32,33 @@ public class GameManager : MonoBehaviour
     // Se llama cuando el jugador hace clic en "Iniciar Juego"
     public void StartGame()
     {
-        ResetGame(); // Resetea el juego al inicio
+        timeLeft = 60f;
+        score = 0;
+        scoreText.text = " " + score;
+        playerOrder.Clear();
+        currentTags = new List<string> { "<a>", "</a>", "<p>", "</p>" }; // Inicia con el nivel 1
+        SpawnBalloons();  // Solo se llama aquí
+        StartTimer();  // Comienza el contador de tiempo
     }
 
-    void Update()
+    // Aquí es donde el temporizador empieza a descontar
+    void StartTimer()
     {
-        // Actualiza el tiempo en pantalla
-        if (timeLeft > 0)
+        // Inicia el tiempo solo cuando realmente se empieza el juego
+        StartCoroutine(TimerCountdown());
+    }
+
+    IEnumerator TimerCountdown()
+    {
+        while (timeLeft > 0)
         {
             timeLeft -= Time.deltaTime;
-            timerText.text = "Tiempo: " + Mathf.Ceil(timeLeft); // Muestra el tiempo restante
-        }
-        else
-        {
-            timerText.text = "Tiempo: 0"; // Asegura que el tiempo no sea negativo
+            timerText.text = "Tiempo: " + Mathf.Ceil(timeLeft); // Actualiza el texto
+            yield return null; // Espera un frame
         }
 
-        // Fin del juego cuando el tiempo llega a 0
-        if (timeLeft <= 0)
-        {
-            GameOver();
-        }
+        timerText.text = "Tiempo: 0"; // Asegura que el contador se quede en 0 cuando termine
+        GameOver(); // Llama al GameOver cuando termine el tiempo
     }
 
     // Función para generar los globos
@@ -87,7 +93,7 @@ public class GameManager : MonoBehaviour
         if (playerOrder.SequenceEqual(currentTags))
         {
             score++;
-            scoreText.text = "Puntos: " + score;
+            scoreText.text = " " + score;
             NextLevel(); // Avanzar al siguiente nivel si el orden es correcto
         }
         else
@@ -117,7 +123,7 @@ public class GameManager : MonoBehaviour
     {
         timeLeft = 60f;
         score = 0;
-        scoreText.text = "Puntos: " + score;
+        scoreText.text = " " + score;
         playerOrder.Clear();
         currentTags = new List<string> { "<a>", "</a>", "<p>", "</p>" }; // Resetear a nivel 1
         SpawnBalloons(); // Generar globos para el primer nivel

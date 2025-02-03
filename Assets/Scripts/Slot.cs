@@ -1,11 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class Slot : MonoBehaviour, IDropHandler
 {
-    public string expectedTag; // La etiqueta esperada en este slot
+    public string expectedTag; // La etiqueta que debería estar en este slot
+    private RectTransform slotRectTransform;
+
+    void Start()
+    {
+        slotRectTransform = GetComponent<RectTransform>();
+    }
 
     public void OnDrop(PointerEventData eventData)
     {
@@ -13,19 +17,24 @@ public class Slot : MonoBehaviour, IDropHandler
 
         if (draggedTag != null)
         {
-            // Verificar si la etiqueta es correcta
+            // Verifica si la etiqueta arrastrada es la correcta
             if (draggedTag.GetTag() == expectedTag)
             {
-                Debug.Log("Etiqueta colocada correctamente: " + draggedTag.GetTag());
-
-                // Fijar la posición de la etiqueta dentro del slot
+                // Coloca la etiqueta en el slot
                 draggedTag.transform.SetParent(transform);
-                draggedTag.transform.localPosition = Vector3.zero;
+                draggedTag.transform.localPosition = Vector3.zero; // Asegura que se coloque en el centro del slot
+
+                // Verifica el orden después de colocar la etiqueta
+                TagContainer tagContainer = FindObjectOfType<TagContainer>();
+                if (tagContainer != null)
+                {
+                    tagContainer.CheckOrder(); // Verifica si el orden es correcto
+                }
             }
             else
             {
-                Debug.Log("Etiqueta incorrecta, vuelve a la posición original.");
-                draggedTag.ResetPosition(); // Si es incorrecto, regresa al origen
+                // Si la etiqueta es incorrecta, vuelve a su posición original
+                draggedTag.ResetPosition();
             }
         }
     }
