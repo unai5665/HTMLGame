@@ -10,22 +10,36 @@ public class Balloon : MonoBehaviour
 
     private float speed = 0.5f; // Velocidad de subida
 
-    void Start()
-    {   
-        // Configurar el texto del globo con la etiqueta HTML
-        textMeshPro = GetComponentInChildren<TMP_Text>();
-        if (textMeshPro != null)
+ void Start()
+{
+    // Buscar el TextMeshPro dentro del objeto hijo
+    textMeshPro = GetComponentInChildren<TMP_Text>();
+
+    // Comprobar si la variable htmlTag tiene un valor correcto
+    
+
+    if (textMeshPro != null)
+    {
+        if (!string.IsNullOrEmpty(htmlTag)) // Verifica si htmlTag tiene un valor
         {
             textMeshPro.text = htmlTag; // Asigna la etiqueta al texto del globo
+            
         }
         else
         {
-            Debug.LogError("TextMeshPro no encontrado en el prefab HTMLTag.");
+            
         }
-
-        // Inicializa la posición del globo en una ubicación aleatoria (si aún no se ha hecho en el prefab)
-        SetRandomPosition();
     }
+    else
+    {
+       
+    }
+
+    SetRandomPosition();
+}
+
+
+
 
     void Update()
     {
@@ -43,23 +57,30 @@ public class Balloon : MonoBehaviour
         // Si el Balloon no ha sido posicionado correctamente por el prefab, le damos una posición aleatoria
         if (transform.position == Vector3.zero)
         {
-            transform.position = new Vector3(Random.Range(-5f, 3f), Random.Range( -3f, -6f), -5.7f);
+            transform.position = new Vector3(Random.Range(-3f, 3f), Random.Range( -3f, -6f), -5.7f);
         }
     }
 
     void Respawn()
     {
         // Cuando el globo sale de la pantalla, regresa a la parte inferior con una posición aleatoria en el eje X
-        transform.position = new Vector3(Random.Range(-5f, 3f), Random.Range( -3f, -6f), -5.7f);
+        transform.position = new Vector3(Random.Range(-3f, 3f), Random.Range( -3f, -6f), -5.7f);
     }
 
     // Detecta clic en el globo
     private void OnMouseDown()
-    {
+    {   Debug.Log("Globo clickeado: " + htmlTag);
         if (GameManager.Instance != null)
         {
             GameManager.Instance.CatchBalloon(htmlTag); // Enviar la etiqueta al GameManager
             Destroy(gameObject);  // Elimina el globo correctamente después de hacer clic
+            // Agregar la etiqueta al UI (asumiendo que tienes algún tipo de UI que gestiona las etiquetas)
+        TagContainer tagContainer = FindObjectOfType<TagContainer>();  // Obtén el TagContainer en la escena
+        if (tagContainer != null)
+        {
+            // Aquí debes asignar correctamente la etiqueta al UI
+            // Puede ser necesario crear un nuevo DraggableTag o agregar la etiqueta al slot adecuado
+        }
         }
     }
 }

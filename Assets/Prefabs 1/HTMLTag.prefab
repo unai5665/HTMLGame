@@ -99,7 +99,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: <p>
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -314,7 +314,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b737dc1a28292c049937205a77c6d029, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  htmlTag: <p>
+  htmlTag: 
   textMeshPro: {fileID: 6216145663829652685}
 --- !u!135 &6520375484996960240
 SphereCollider:
@@ -335,5 +335,5 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Radius: 0.49731064
+  m_Center: {x: -1.1904988, y: 0.87769955, z: -28.985996}

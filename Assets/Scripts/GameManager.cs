@@ -63,10 +63,11 @@ public class GameManager : MonoBehaviour
 
         foreach (string tag in currentTags)
         {
+             Debug.Log("Asignando etiqueta al globo: " + tag); 
             GameObject newBalloon = Instantiate(balloonPrefab, balloonParent); // Crear el globo bajo el BalloonParent
             newBalloon.GetComponent<Balloon>().htmlTag = tag; // Asignar la etiqueta al globo
 
-            newBalloon.transform.position = new Vector3(Random.Range(-5f, 3f), Random.Range( -3f, -6f), -5.7f); // Posición aleatoria
+            newBalloon.transform.position = new Vector3(Random.Range(-3f, 3f), Random.Range( -3f, -6f), -5.7f); // Posición aleatoria
         }
     }
 
