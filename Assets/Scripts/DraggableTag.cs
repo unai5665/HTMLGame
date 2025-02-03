@@ -37,6 +37,11 @@ public class DraggableTag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
             transform.position = originalPosition; // Devuelve a la posición original
         }
     }
+    public void ResetPosition()
+{
+    // Devolver la etiqueta a su posición original
+    transform.position = originalPosition;
+}
 
     private bool ValidDrop()
     {

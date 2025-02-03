@@ -76,10 +76,7 @@ public class GameManager : MonoBehaviour
     {
         playerOrder.Add(tag);
 
-        if (playerOrder.Count == currentTags.Count)
-        {
-            CheckOrder();
-        }
+       
     }
 
     // Verifica si el orden de las etiquetas es correcto

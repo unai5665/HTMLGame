@@ -69,18 +69,20 @@ public class Balloon : MonoBehaviour
 
     // Detecta clic en el globo
     private void OnMouseDown()
-    {   Debug.Log("Globo clickeado: " + htmlTag);
-        if (GameManager.Instance != null)
-        {
-            GameManager.Instance.CatchBalloon(htmlTag); // Enviar la etiqueta al GameManager
-            Destroy(gameObject);  // Elimina el globo correctamente después de hacer clic
-            // Agregar la etiqueta al UI (asumiendo que tienes algún tipo de UI que gestiona las etiquetas)
+{
+    Debug.Log("Globo clickeado: " + htmlTag);  // Esto debería aparecer en la consola cuando haces clic
+    if (GameManager.Instance != null)
+    {
+        GameManager.Instance.CatchBalloon(htmlTag); // Enviar la etiqueta al GameManager
+        Destroy(gameObject);  // Elimina el globo correctamente después de hacer clic
+
+        // Agregar la etiqueta al UI como un objeto arrastrable
         TagContainer tagContainer = FindObjectOfType<TagContainer>();  // Obtén el TagContainer en la escena
         if (tagContainer != null)
         {
-            // Aquí debes asignar correctamente la etiqueta al UI
-            // Puede ser necesario crear un nuevo DraggableTag o agregar la etiqueta al slot adecuado
-        }
+            tagContainer.AddTagToUI(htmlTag);  // Llamar al método para agregar la etiqueta en la UI
         }
     }
+}
+
 }

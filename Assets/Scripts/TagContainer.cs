@@ -10,6 +10,8 @@ public class TagContainer : MonoBehaviour
     public List<string> expectedOrder; // Lista con el orden correcto de etiquetas
     public List<DraggableTag> tagSlots; // Slots en el UI donde las etiquetas se colocan
     public GameManager gameManager;
+    public GameObject draggableTagPrefab;  // Prefab de la etiqueta arrastrable
+    public Transform tagContainerPanel; 
 
     public void CheckOrder()
     {
@@ -27,6 +29,34 @@ public class TagContainer : MonoBehaviour
         else
         {
             Debug.Log("Orden incorrecto, intenta de nuevo.");
+            ResetTags();
         }
     }
+    public void ResetTags()
+{
+    // Vuelve a colocar las etiquetas en el panel (o cualquier otro comportamiento de reset)
+    foreach (DraggableTag tag in tagSlots)
+    {
+        tag.ResetPosition(); // Método en DraggableTag para devolver la etiqueta a su posición original
+    }
+}
+    public void AddTagToUI(string tag)
+{
+    // Instanciar el prefab para la etiqueta
+    GameObject newTag = Instantiate(draggableTagPrefab, tagContainerPanel);
+
+    // Obtener el componente TMP_Text y asignar la etiqueta
+    TMP_Text text = newTag.GetComponent<TMP_Text>();
+    if (text != null)
+    {
+        text.text = tag;  // Asignar el texto de la etiqueta al nuevo objeto
+    }
+
+    // Aquí puedes agregar más lógica si quieres hacer que las etiquetas sean arrastrables
+    DraggableTag draggableTag = newTag.GetComponent<DraggableTag>();
+    if (draggableTag != null)
+    {
+        // Puedes inicializar otras configuraciones de draggableTag si es necesario
+    }
+}
 }
