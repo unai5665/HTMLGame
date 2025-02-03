@@ -9,14 +9,11 @@ public class Balloon : MonoBehaviour
     public TMP_Text textMeshPro;
 
     private float speed = 0.5f; // Velocidad de subida
-    private BalloonSpawner spawner;
-    
 
-     void Start()
+    void Start()
     {   
-        spawner = FindObjectOfType<BalloonSpawner>();
+        // Configurar el texto del globo con la etiqueta HTML
         textMeshPro = GetComponentInChildren<TMP_Text>();
-
         if (textMeshPro != null)
         {
             textMeshPro.text = htmlTag; // Asigna la etiqueta al texto del globo
@@ -25,18 +22,35 @@ public class Balloon : MonoBehaviour
         {
             Debug.LogError("TextMeshPro no encontrado en el prefab HTMLTag.");
         }
+
+        // Inicializa la posición del globo en una ubicación aleatoria (si aún no se ha hecho en el prefab)
+        SetRandomPosition();
     }
 
     void Update()
     {
-        transform.Translate(Vector3.up * speed * Time.deltaTime);
+        transform.Translate(Vector3.up * speed * Time.deltaTime);  // El globo sube
 
-    
-         // Reaparece si se sale de la pantalla
+        // Reaparece si se sale de la pantalla
         if (transform.position.y > 5f)
         {
             Respawn();
         }
+    }
+
+    private void SetRandomPosition()
+    {
+        // Si el Balloon no ha sido posicionado correctamente por el prefab, le damos una posición aleatoria
+        if (transform.position == Vector3.zero)
+        {
+            transform.position = new Vector3(Random.Range(-5f, 3f), Random.Range( -3f, -6f), -5.7f);
+        }
+    }
+
+    void Respawn()
+    {
+        // Cuando el globo sale de la pantalla, regresa a la parte inferior con una posición aleatoria en el eje X
+        transform.position = new Vector3(Random.Range(-5f, 3f), Random.Range( -3f, -6f), -5.7f);
     }
 
     // Detecta clic en el globo
@@ -44,13 +58,8 @@ public class Balloon : MonoBehaviour
     {
         if (GameManager.Instance != null)
         {
-            GameManager.Instance.CatchBalloon(htmlTag);
-            spawner.RemoveBalloon(gameObject); // Elimina el globo correctamente
+            GameManager.Instance.CatchBalloon(htmlTag); // Enviar la etiqueta al GameManager
+            Destroy(gameObject);  // Elimina el globo correctamente después de hacer clic
         }
-    }
-
-    void Respawn()
-    {
-        transform.position = new Vector3(Random.Range(-2f, 2f), -3f, 0);
     }
 }
