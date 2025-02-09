@@ -15,7 +15,7 @@ Este es un juego interactivo creado en Unity, en el que los jugadores deben capt
 
 ![GameScreen](https://github.com/unai5665/HTMLGame/blob/main/GameScreen.PNG)
 
-![GameOverScreen]()
+![GameOverScreen](https://github.com/unai5665/HTMLGame/blob/main/GameOverScreen.PNG)
 
 
 
