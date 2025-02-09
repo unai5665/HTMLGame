@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using TMPro;
+using UnityEngine.Animations;
 
 public class DraggableTag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
@@ -12,8 +13,15 @@ public class DraggableTag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     void Start()
     {
         rectTransform = GetComponent<RectTransform>();
+
         canvasGroup = GetComponent<CanvasGroup>();
+
+        if (canvasGroup == null)
+
+            canvasGroup = gameObject.AddComponent<CanvasGroup>();
+
         originalPosition = rectTransform.anchoredPosition;
+        
         canvas = GetComponentInParent<Canvas>();
     }
 
@@ -21,24 +29,37 @@ public class DraggableTag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     {
         // Al empezar a arrastrar, hacer el objeto un poco transparente y permitir arrastrarlo
         canvasGroup.alpha = 0.6f;
+
         canvasGroup.blocksRaycasts = false;
+
+        transform.SetParent(canvas.transform, true);
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        // Convertir la posición de la pantalla a coordenadas locales dentro del canvas
-        Vector2 localPointerPosition;
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(canvas.GetComponent<RectTransform>(), eventData.position, eventData.pressEventCamera, out localPointerPosition);
-        
-        // Asignar la posición local del cursor al RectTransform del objeto arrastrado
-        rectTransform.anchoredPosition = localPointerPosition;
+        if (RectTransformUtility.ScreenPointToLocalPointInRectangle(
+
+            canvas.GetComponent<RectTransform>(), 
+
+            eventData.position, 
+
+            eventData.pressEventCamera, 
+            
+            out Vector2 localPointerPosition)) {
+            rectTransform.anchoredPosition = localPointerPosition;
+        }
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        // Al terminar el arrastre, restaurar la opacidad original y permitir los raycast
         canvasGroup.alpha = 1f;
+        
         canvasGroup.blocksRaycasts = true;
+
+        if (transform.parent == canvas.transform) // Si no está en un slot válido
+        {
+            ResetPosition();
+        }
     }
 
     // Resetea la posición original si la etiqueta no se suelta en el lugar correcto
@@ -49,6 +70,7 @@ public class DraggableTag : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
 
     public string GetTag()
     {
-        return GetComponent<TMP_Text>().text;
+        return GetComponentInChildren<TMP_Text>().text;
     }
+
 }

@@ -5,7 +5,7 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/SimpleLowPolyNature/Scenes/DemoDay.unity
     guid: 304a5748b784bc241be3c08d67013b21
   m_configObjects: {}

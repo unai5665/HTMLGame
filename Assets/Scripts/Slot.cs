@@ -17,25 +17,29 @@ public class Slot : MonoBehaviour, IDropHandler
 
         if (draggedTag != null)
         {
-            // Verifica si la etiqueta arrastrada es la correcta
-            if (draggedTag.GetTag() == expectedTag)
+            
+
+            if (draggedTag.GetTag() == expectedTag) // Si la etiqueta coincide
             {
-                // Coloca la etiqueta en el slot
                 draggedTag.transform.SetParent(transform);
-                draggedTag.transform.localPosition = Vector3.zero; // Asegura que se coloque en el centro del slot
+
+                draggedTag.transform.localPosition = Vector3.zero;
+                
+                
 
                 // Verifica el orden después de colocar la etiqueta
-                TagContainer tagContainer = FindObjectOfType<TagContainer>();
-                if (tagContainer != null)
+               TagContainer tagContainer = FindObjectOfType<TagContainer>();
+                if (tagContainer != null && tagContainer.AllSlotsFilled())  
                 {
-                    tagContainer.CheckOrder(); // Verifica si el orden es correcto
+                    tagContainer.CheckOrder();
                 }
             }
             else
             {
-                // Si la etiqueta es incorrecta, vuelve a su posición original
+            
                 draggedTag.ResetPosition();
             }
         }
     }
 }
+

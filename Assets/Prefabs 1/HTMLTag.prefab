@@ -150,7 +150,7 @@ MonoBehaviour:
   m_enableKerning: 1
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
-  m_isRichText: 1
+  m_isRichText: 0
   m_parseCtrlCharacters: 1
   m_isOrthographic: 0
   m_isCullingEnabled: 0
@@ -232,7 +232,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 71a9af9d6be34b048aa3930a0bf65ee3, type: 2}
+  - {fileID: 2100000, guid: 202c5159be2241d4682cfcbb8d30c7d2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -321,6 +321,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   htmlTag: 
   textMeshPro: {fileID: 6216145663829652685}
+  popSound: {fileID: 8300000, guid: 1aa8b0fa96796a84ebdec7831bdb8e07, type: 3}
 --- !u!135 &6520375484996960240
 SphereCollider:
   m_ObjectHideFlags: 0

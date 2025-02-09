@@ -8,18 +8,24 @@ public class Balloon : MonoBehaviour
     public string htmlTag; // La etiqueta HTML que contiene este globo
     public TMP_Text textMeshPro;
 
-    private float speed = 0.5f; // Velocidad de subida
+    private float speed = 1f; // Velocidad de subida
+
+    public AudioClip popSound; // Sonido de explosión
+    private AudioSource audioSource;
 
 void Start()
 {
     textMeshPro = GetComponentInChildren<TMP_Text>();
-    if (textMeshPro != null && !string.IsNullOrEmpty(htmlTag))
+    if (textMeshPro != null)
     {
-        textMeshPro.text = htmlTag;
+        // Desactiva la interpretación de rich text para que se muestren los caracteres "<" y ">" literalmente.
+        textMeshPro.richText = false;
+        if (!string.IsNullOrEmpty(htmlTag))
+        {
+            textMeshPro.text = htmlTag;
+        }
     }
-
-    // Posición inicial directamente sin necesidad de SetRandomPosition()
-    transform.position = new Vector3(Random.Range(-3f, 3f), Random.Range(-6f, -3f), -5.7f);
+    audioSource = gameObject.AddComponent<AudioSource>();
 }
 
 
@@ -42,25 +48,32 @@ void Start()
     void Respawn()
     {
         // Cuando el globo sale de la pantalla, regresa a la parte inferior con una posición aleatoria en el eje X
-        transform.position = new Vector3(Random.Range(-3f, 3f), Random.Range( -3f, -6f), -5.7f);
+        transform.position = new Vector3(Random.Range(-2.5f, 2f), Random.Range( -3f, -6f), -5f);
     }
 
     // Detecta clic en el globo
     private void OnMouseDown()
-{
-    Debug.Log("Globo clickeado: " + htmlTag);  // Esto debería aparecer en la consola cuando haces clic
-    if (GameManager.Instance != null)
     {
-        GameManager.Instance.CatchBalloon(htmlTag); // Enviar la etiqueta al GameManager
-        Destroy(gameObject);  // Elimina el globo correctamente después de hacer clic
-
-        // Agregar la etiqueta al UI como un objeto arrastrable
-        TagContainer tagContainer = FindObjectOfType<TagContainer>();  // Obtén el TagContainer en la escena
-        if (tagContainer != null)
+        if (GameManager.Instance != null)
         {
-            tagContainer.AddTagToUI(htmlTag);  // Llamar al método para agregar la etiqueta en la UI
+
+            GameManager.Instance.CatchBalloon(htmlTag);
+
+           if (GameManager.Instance.ClicBalloon != null && popSound != null)
+            {
+                GameManager.Instance.ClicBalloon.PlayOneShot(popSound, 2.0f); // Volumen más alto
+            }
+
+            Destroy(gameObject); // Espera a que el sonido termine antes de destruir
+    
+            
+
+            TagContainer tagContainer = FindObjectOfType<TagContainer>();
+            if (tagContainer != null)
+            {
+                tagContainer.AddTagToUI(htmlTag);
+            }
         }
     }
 }
 
-}
