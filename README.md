@@ -11,7 +11,7 @@ Este es un juego interactivo creado en Unity, en el que los jugadores deben capt
 - **Pantallas de UI**: Pantallas de inicio, temporizador, puntuación y final del juego.
 
 ## Interfaz
-![StartScreen]())
+![StartScreen](https://github.com/unai5665/HTMLGame/blob/main/StartScreen.PNG))
 
 ![GameScreen]()
 
