@@ -132,7 +132,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -96.36957, y: 74.48275, z: -105.06241, w: 86.89082}
+  m_margin: {x: 1.4938965, y: 50.38938, z: -2.8518982, w: 49.833786}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -195,5 +195,5 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 404.9229, y: 116.49923, z: 49.597626}
-  m_Center: {x: -1.5055847, y: 6.8503723, z: -7.156067}
+  m_Size: {x: 200.9892, y: 52.44384, z: 49.597626}
+  m_Center: {x: -1.8570862, y: 0.41944885, z: -7.156067}
